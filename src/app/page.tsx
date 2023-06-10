@@ -8,21 +8,7 @@ import Papa from "papaparse";
 
 const App: React.FC = () => {
   const [text, setText] = useState('');
-  const [foodDB, setFoodDB] = useState('');
-  const filePath: string = './EatsDB.csv';
-
-  useEffect(() => {
-    axios.get(filePath)
-    .then((results) => 
-    
-    Papa.parse(results.data, {
-      header: true,
-      skipEmptyLines: true,
-      complete: function (results: { data: React.SetStateAction<string>; }) {
-        setFoodDB(results.data);
-      }}))
-    .catch(err => console.log(err))
-  });
+  const [matches, setMatches] = useState('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
@@ -32,10 +18,22 @@ const App: React.FC = () => {
     event.preventDefault();
     // Perform any action with the entered text
     const form = event.target;
-    setText(form[0].value);
-    console.log('Submitted text:', text);
-    // Do stuff
-
+    let promise = new Promise(function(resolve, reject) {
+      setText(form[0].value);
+      resolve(form[0].value);
+    });
+    promise.then((searchText) => {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(searchText)
+        };
+    fetch('http://127.0.0.1:5000/get_food_matches', requestOptions)
+        .then(response => response.text())
+        .then(data => setMatches(data));
+  
+   console.log('Submitted text:', text);
+    })
   };
 
   return (
