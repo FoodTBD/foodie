@@ -7,11 +7,11 @@ import axios from 'axios';
 import Papa from "papaparse";
 
 const App: React.FC = () => {
-  const [text, setText] = useState('');
-  const [matches, setMatches] = useState('');
+  const [ocrDataArray, setOcrDataArray] = useState('');
+  const [matches, setMatches] = useState("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
+    setOcrDataArray(event.target.value);
   };
 
   const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
@@ -19,7 +19,7 @@ const App: React.FC = () => {
     // Perform any action with the entered text
     const form = event.target;
     let promise = new Promise(function(resolve, reject) {
-      setText(form[0].value);
+      setOcrDataArray(form[0].value);
       resolve(form[0].value);
     });
     promise.then((searchText) => {
@@ -28,26 +28,28 @@ const App: React.FC = () => {
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(searchText)
         };
-    fetch('http://127.0.0.1:5000/get_food_matches', requestOptions)
+    fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
         .then(response => response.text())
         .then(data => setMatches(data));
   
-   console.log('Submitted text:', text);
+   console.log('Submitted text:', ocrDataArray);
     })
   };
 
   return (
-    <div>
+    <><div className='Results'>
+{matches}
+      </div><div>
       <h1>FoodTBD Search Form</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Enter Query:<br></br>
-          <textarea rows={30} cols={100} />
+          <textarea rows={30} cols={100} defaultValue={ocrDataArray}/>
         </label>
         <br></br>
         <button type="submit">Submit</button>
       </form>
-    </div>
+    </div></>
   );
 };
 
