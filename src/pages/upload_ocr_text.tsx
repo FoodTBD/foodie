@@ -10,7 +10,8 @@ import Link from 'next/link'
 
 export default function UploadOcrText() {
   const [ocrDataArray, setOcrDataArray] = useState('');
-  const [matches, setMatches] = useState("");
+  const [levenshteinRatio, setLevenshteinRatio] = useState('');
+  const [matches, setMatches] = useState([]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOcrDataArray(event.target.value);
@@ -22,17 +23,19 @@ export default function UploadOcrText() {
     const form = event.target;
     let promise = new Promise(function(resolve, reject) {
       setOcrDataArray(form[0].value);
-      resolve(form[0].value);
+      setLevenshteinRatio(form[1].value);
+      resolve(form);
     });
-    promise.then((searchText) => {
+    promise.then((form) => {
       const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(searchText)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({'searchText': form[0].value, 'levenshteinRatio': form[1].value})
         };
     fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
-        .then(response => response.text())
-        .then(data => setMatches(data));
+        .then(response => response.json())
+        .then(data => setMatches(data['matches']));
+        // .then(data => console.log(data['matches']));
   
    console.log('Submitted text:', ocrDataArray);
     })
@@ -41,14 +44,22 @@ export default function UploadOcrText() {
   return (
     <div className="upload_ocr_text">
       <div className='Results'>
-  {matches}
+  <ul>
+  {matches.map((item, index) => (
+          <li >{item.name_native} [{item.name_en}]</li>
+        ))}
+        </ul>
+  
         </div><div>
         <h1>FoodTBD Search Form</h1>
         <form onSubmit={handleSubmit}>
           <label>
             Enter Query:<br></br>
-            <textarea rows={30} cols={100} defaultValue={ocrDataArray}/>
           </label>
+          <textarea rows={30} cols={100} defaultValue={ocrDataArray}/>
+          <br></br>
+          <label htmlFor="lang_list" >Enter Levenshtein ratio :  </label>
+            <input type="text" name="lang_list" />
           <br></br>
           <button type="submit">Submit</button>
         </form>
