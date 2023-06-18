@@ -5,17 +5,22 @@
 */
 
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
-import axios from 'axios';
-import Link from 'next/link'
+import Link from 'next/link';
+import '../app/globals.css';
+
 
 export default function UploadOcrText() {
   const [ocrDataArray, setOcrDataArray] = useState('');
-  const [levenshteinRatio, setLevenshteinRatio] = useState('');
   const [matches, setMatches] = useState([]);
+  const [foodItemView, setFoodItemView] = useState({});
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOcrDataArray(event.target.value);
   };
+
+const handleFoodItemOnClick = (foodItem: any) => () =>{
+    setFoodItemView(foodItem);
+  }
 
   const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
     event.preventDefault();
@@ -23,43 +28,54 @@ export default function UploadOcrText() {
     const form = event.target;
     let promise = new Promise(function(resolve, reject) {
       setOcrDataArray(form[0].value);
-      setLevenshteinRatio(form[1].value);
+      // setLevenshteinRatio(form[1].value);
       resolve(form);
     });
     promise.then((form) => {
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({'searchText': form[0].value, 'levenshteinRatio': form[1].value})
+        body: JSON.stringify({'searchText': form[0].value})
         };
     fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
         .then(response => response.json())
         .then(data => setMatches(data['matches']));
-        // .then(data => console.log(data['matches']));
-  
+
    console.log('Submitted text:', ocrDataArray);
     })
   };
 
   return (
     <div className="upload_ocr_text">
-      <div className='Results'>
-  <ul>
-  {matches.map((item, index) => (
-          <li >{item.name_native} [{item.name_en}]</li>
-        ))}
+      <div className='results'>
+        <ul>
+          {matches.map((item, index) => (
+            <li ><button onClick={handleFoodItemOnClick(item)}>{item.name_native} [{item.name_en}]</button></li>
+          ))}
         </ul>
-  
-        </div><div>
+      </div>
+      <div className='resultsView'>
+        <b>Native Name:</b> {foodItemView.name_native} 
+        <br></br><br></br>
+        {foodItemView.name_en ? <div><b>Name (English):</b> {foodItemView.name_en}<br></br><br></br></div> : ''}
+        {foodItemView.alt_names ? <div><b>Alt Names:</b> {foodItemView.alt_names}<br></br><br></br></div> : ''}
+        <b>Geo Region:</b> {foodItemView['Geo Region']}
+        <br></br><br></br>
+        <b>Summary:</b> {foodItemView.summary_en}
+        <br></br><br></br>
+        {foodItemView.wikipedia_url_en ? <div><a href={foodItemView.wikipedia_url_en}>{foodItemView.wikipedia_url_en}</a><br></br><br></br></div> : ''}
+        {foodItemView.image_url ? <div><img src={foodItemView.image_url} style={{ width: 200}}></img><br></br><br></br></div> : ''}
+        {foodItemView.how_to_eat_en ? <div><b>How To Eat:</b> {foodItemView.how_to_eat_en}<br></br><br></br></div> : ''}
+        {foodItemView.season ? <div><b>Season:</b> {foodItemView.season}<br></br><br></br></div> : ''}
+        {foodItemView.Notes ? <div><b>Notes:</b> {foodItemView.Notes}<br></br><br></br></div> : ''}
+      </div>
+      <div>
         <h1>FoodTBD Search Form</h1>
         <form onSubmit={handleSubmit}>
           <label>
             Enter Query:<br></br>
           </label>
-          <textarea rows={30} cols={100} defaultValue={ocrDataArray}/>
-          <br></br>
-          <label htmlFor="lang_list" >Enter Levenshtein ratio :  </label>
-            <input type="text" name="lang_list" />
+          <textarea rows={30} cols={100} defaultValue={ocrDataArray} />
           <br></br>
           <button type="submit">Submit</button>
         </form>

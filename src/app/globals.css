@@ -32,3 +32,15 @@ input {
   width: 50%;
   height: 300px;
 }
+
+/* CSS */
+
+.resultsView {
+  height: 100%;
+  width: 30%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 20px;
+  background-color: lightblue;
+  }
