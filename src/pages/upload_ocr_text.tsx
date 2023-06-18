@@ -7,19 +7,20 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import '../app/globals.css';
+import FoodItemView from './food_item_view';
 
 
 export default function UploadOcrText() {
   const [ocrDataArray, setOcrDataArray] = useState('');
   const [matches, setMatches] = useState([]);
-  const [foodItemView, setFoodItemView] = useState({});
+  const [displayedFoodItem, setDisplayedFoodItem] = useState({});
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOcrDataArray(event.target.value);
   };
 
 const handleFoodItemOnClick = (foodItem: any) => () =>{
-    setFoodItemView(foodItem);
+    setDisplayedFoodItem(foodItem);
   }
 
   const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
@@ -55,19 +56,8 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
         </ul>
       </div>
       <div className='resultsView'>
-        <b>Native Name:</b> {foodItemView.name_native} 
-        <br></br><br></br>
-        {foodItemView.name_en ? <div><b>Name (English):</b> {foodItemView.name_en}<br></br><br></br></div> : ''}
-        {foodItemView.alt_names ? <div><b>Alt Names:</b> {foodItemView.alt_names}<br></br><br></br></div> : ''}
-        <b>Geo Region:</b> {foodItemView['Geo Region']}
-        <br></br><br></br>
-        <b>Summary:</b> {foodItemView.summary_en}
-        <br></br><br></br>
-        {foodItemView.wikipedia_url_en ? <div><a href={foodItemView.wikipedia_url_en}>{foodItemView.wikipedia_url_en}</a><br></br><br></br></div> : ''}
-        {foodItemView.image_url ? <div><img src={foodItemView.image_url} style={{ width: 200}}></img><br></br><br></br></div> : ''}
-        {foodItemView.how_to_eat_en ? <div><b>How To Eat:</b> {foodItemView.how_to_eat_en}<br></br><br></br></div> : ''}
-        {foodItemView.season ? <div><b>Season:</b> {foodItemView.season}<br></br><br></br></div> : ''}
-        {foodItemView.Notes ? <div><b>Notes:</b> {foodItemView.Notes}<br></br><br></br></div> : ''}
+        <FoodItemView food_item={displayedFoodItem}></FoodItemView>
+
       </div>
       <div>
         <h1>FoodTBD Search Form</h1>
