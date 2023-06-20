@@ -1,11 +1,4 @@
-input {
-    width: 50%;
-    height: 300px;
-  }
-  
-  /* CSS */
-  
-  .resultsView {
+.resultsView {
     height: 100%;
     width: 20%;
     position: absolute;
@@ -13,8 +6,8 @@ input {
     top: 0;
     padding: 20px;
     background-color: lightblue;
-    }
-  
-  .error {
+}
+
+.error {
     color: red;
-  }
+}

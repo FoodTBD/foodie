@@ -7,6 +7,7 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import '../app/globals.css';
+import '../app/uploads.css';
 import FoodItemView from './food_item_view';
 
 
@@ -14,6 +15,7 @@ export default function UploadOcrText() {
   const [ocrDataArray, setOcrDataArray] = useState('');
   const [matches, setMatches] = useState([]);
   const [displayedFoodItem, setDisplayedFoodItem] = useState({});
+  const [displayError, setDisplayError] = useState('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOcrDataArray(event.target.value);
@@ -27,7 +29,7 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
     event.preventDefault();
     // Perform any action with the entered text
     const form = event.target;
-    let promise = new Promise(function(resolve, reject) {
+    let promise = new Promise(function (resolve, reject) {
       setOcrDataArray(form[0].value);
       // setLevenshteinRatio(form[1].value);
       resolve(form);
@@ -36,18 +38,31 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({'searchText': form[0].value})
-        };
-    fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
+        body: JSON.stringify({ 'searchText': form[0].value })
+      };
+      fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
         .then(response => response.json())
-        .then(data => setMatches(data['matches']));
+        .then(data => setMatches(data['matches']))
+        .catch(error => {
+          let errorStr: string = 'There was a problem with the Fetch operation: ' + error;
+          setDisplayError(errorStr);
+          console.error(errorStr);
+        });
 
-   console.log('Submitted text:', ocrDataArray);
+      console.log('Submitted text:', ocrDataArray);
     })
+      .catch(error => {
+        let errorStr: string = 'ERROR: ' + error;
+        setDisplayError(errorStr);
+        console.error(errorStr);
+      });
   };
 
   return (
     <div className="upload_ocr_text">
+      <div className='error'>
+        {displayError}
+      </div>
       <div className='results'>
         <ul>
           {matches.map((item, index) => (
@@ -57,7 +72,6 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
       </div>
       <div className='resultsView'>
         <FoodItemView food_item={displayedFoodItem}></FoodItemView>
-
       </div>
       <div>
         <h1>FoodTBD Search Form</h1>
