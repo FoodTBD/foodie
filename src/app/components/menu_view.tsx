@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
-import '../app/globals.css';
+import '../app/css/globals.css';
 
 
 export default function MenuView(props) {

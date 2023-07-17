@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import Popup from 'reactjs-popup';
-import '../app/globals.css';
-import '../app/uploads.css';
+import '../app/css/globals.css';
+import '../app/css/uploads.css';
 import FoodItemView from '../app/components/food_item_view';
 
 export default function UploadMenuSnapshot() {

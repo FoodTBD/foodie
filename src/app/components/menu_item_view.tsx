@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
-import '../app/globals.css';
+import '../app/css/globals.css';
 
 
 export default function MenuView(props) {
@@ -13,7 +13,7 @@ export default function MenuView(props) {
         {menu.city ? <div> {menu.city}<br></br><br></br></div> : ''}
         {menu.phone_number ? <div><b>Phone Number:</b> {menu.phone_number}<br></br><br></br></div> : ''}
         <br></br><br></br>
-        <b>Menu:</b> {foodItem.summary_en}
+        <b>Menu:</b>
         <br></br><br></br>
         {foodItem.wikipedia_url_en ? <div><a href={foodItem.wikipedia_url_en}>{foodItem.wikipedia_url_en}</a><br></br><br></br></div> : ''}
         {foodItem.image_url ? <div><img src={foodItem.image_url} style={{ width: 200}}></img><br></br><br></br></div> : ''}
