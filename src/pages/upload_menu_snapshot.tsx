@@ -1,8 +1,9 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
+import Popup from 'reactjs-popup';
 import '../app/globals.css';
 import '../app/uploads.css';
-import FoodItemView from './food_item_view';
+import FoodItemView from '../app/components/food_item_view';
 
 export default function UploadMenuSnapshot() {
   // const [images, setImages] = useState([]);
@@ -11,7 +12,7 @@ export default function UploadMenuSnapshot() {
   const [displayedFoodItem, setDisplayedFoodItem] = useState({});
   const [displayError, setDisplayError] = useState('');
 
-  const handleFoodItemOnClick = (foodItem: any) => () =>{
+  const handleFoodItemOnClick = (foodItem: any) => () => {
     setDisplayedFoodItem(foodItem);
   }
 
@@ -52,11 +53,10 @@ export default function UploadMenuSnapshot() {
       </div>
       <div className='results'>
         {matches.map((item, index) => (
-          <li ><button onClick={handleFoodItemOnClick(item)}>{item.name_native} [{item.name_en}]</button></li>
+          <li ><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
+            <div ><FoodItemView food_item={item}></FoodItemView> </div>
+          </Popup></li>
         ))}
-      </div>
-      <div className='resultsView'>
-        <FoodItemView food_item={displayedFoodItem}></FoodItemView>
       </div>
       <form onSubmit={handleSubmit} className="container mt-5 pt-5 pb-5" encType="multipart/form-data">
         <div className="form-inline justify-content-center mt-5">

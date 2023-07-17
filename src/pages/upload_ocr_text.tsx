@@ -6,24 +6,21 @@
 
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 import '../app/globals.css';
 import '../app/uploads.css';
-import FoodItemView from './food_item_view';
+import FoodItemView from '../app/components/food_item_view';
 
 
 export default function UploadOcrText() {
   const [ocrDataArray, setOcrDataArray] = useState('');
   const [matches, setMatches] = useState([]);
-  const [displayedFoodItem, setDisplayedFoodItem] = useState({});
   const [displayError, setDisplayError] = useState('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOcrDataArray(event.target.value);
   };
-
-const handleFoodItemOnClick = (foodItem: any) => () =>{
-    setDisplayedFoodItem(foodItem);
-  }
 
   const handleSubmit = (event: { preventDefault: () => void; target: any; }) => {
     event.preventDefault();
@@ -31,7 +28,6 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
     const form = event.target;
     let promise = new Promise(function (resolve, reject) {
       setOcrDataArray(form[0].value);
-      // setLevenshteinRatio(form[1].value);
       resolve(form);
     });
     promise.then((form) => {
@@ -41,6 +37,9 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
         body: JSON.stringify({ 'searchText': form[0].value })
       };
       fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
+      // let url: string = "http://ec2-107-20-28-252.compute-1.amazonaws.com:5000";
+      // fetch(url + '/get_food_matches_from_string', requestOptions)
+      
         .then(response => response.json())
         .then(data => setMatches(data['matches']))
         .catch(error => {
@@ -66,12 +65,11 @@ const handleFoodItemOnClick = (foodItem: any) => () =>{
       <div className='results'>
         <ul>
           {matches.map((item, index) => (
-            <li ><button onClick={handleFoodItemOnClick(item)}>{item.name_native} [{item.name_en}]</button></li>
+            <li><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
+                  <div ><FoodItemView food_item={item}></FoodItemView> </div>
+          </Popup></li>
           ))}
         </ul>
-      </div>
-      <div className='resultsView'>
-        <FoodItemView food_item={displayedFoodItem}></FoodItemView>
       </div>
       <div>
         <h1>FoodTBD Search Form</h1>
