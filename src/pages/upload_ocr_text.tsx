@@ -10,8 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-// import '../app/css/globals.css';
-// import '../app/css/uploads.css';
 import FoodItemView from '../app/components/food_item_view';
 
 
@@ -39,9 +37,9 @@ export default function UploadOcrText() {
         body: JSON.stringify({ 'searchText': form[0].value })
       };
       fetch('http://127.0.0.1:5000/get_food_matches_from_string', requestOptions)
-      // let url: string = "http://ec2-107-20-28-252.compute-1.amazonaws.com:5000";
-      // fetch(url + '/get_food_matches_from_string', requestOptions)
-      
+        // let url: string = "http://ec2-107-20-28-252.compute-1.amazonaws.com:5000";
+        // fetch(url + '/get_food_matches_from_string', requestOptions)
+
         .then(response => response.json())
         .then(data => setMatches(data['matches']))
         .catch(error => {
@@ -61,35 +59,36 @@ export default function UploadOcrText() {
 
   return (
     <Container className="p-3">
-    <div className="col-xs-12 col-sm-6 col-md-8">
-    <div className="upload_ocr_text">
-      <div className='error'>
-        {displayError}
-      </div>
-      <div className='results'>
-        <ul>
-          {matches.map((item, index) => (
-            <li><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
+      <div className="col-xs-12 col-sm-6 col-md-8">
+        <div className="upload_ocr_text">
+          <div className='error'>
+            {displayError}
+          </div>
+          <Link href="/">Home</Link>
+          <div className='results'>
+            <br></br>
+            <ul>
+              {matches.map((item, index) => (
+                <li><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
                   <div ><FoodItemView food_item={item}></FoodItemView> </div>
-          </Popup></li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h1>FoodTBD Search Form</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Enter Query:<br></br>
-          </label>
-          <textarea rows={20} cols={100} defaultValue={ocrDataArray} />
+                </Popup></li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h1>Search db using EasyOcr Results Array</h1>
+            <form onSubmit={handleSubmit}>
+              <label>
+                Enter Array:<br></br>
+              </label>
+              <textarea rows={20} cols={100} defaultValue={ocrDataArray} />
+              <br></br>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
           <br></br>
-          <button type="submit">Submit</button>
-        </form>
+        </div>
       </div>
-      <br></br>
-      <Link href="/">Home</Link>
-    </div>
-    </div>
     </Container>
   );
 };
