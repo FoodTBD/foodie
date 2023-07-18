@@ -1,9 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import Container from 'react-bootstrap/Container';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
 import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 import '../app/css/globals.css';
 import '../app/css/uploads.css';
 import FoodItemView from '../app/components/food_item_view';
+
 
 export default function UploadMenuSnapshot() {
   // const [images, setImages] = useState([]);
@@ -47,37 +51,38 @@ export default function UploadMenuSnapshot() {
   };
 
   return (
-    <div className="upload_menu_snapshot">
-      <div className='error'>
-        {displayError}
-      </div>
-      <div className='results'>
-        {matches.map((item, index) => (
-          <li ><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
-            <div ><FoodItemView food_item={item}></FoodItemView> </div>
-          </Popup></li>
-        ))}
-      </div>
-      <form onSubmit={handleSubmit} className="container mt-5 pt-5 pb-5" encType="multipart/form-data">
-        <div className="form-inline justify-content-center mt-5">
-          <label htmlFor="image" className="ml-sm-4 font-weight-bold mr-md-4">Image :  </label>
-          <div className="input-group">
+    <Container className="p-3">
+      <div className="col-xs-12 col-sm-6 col-md-8">
+        <div className="upload_menu_snapshot">
+          <div className='error'>
+            {displayError}
+          </div>
+          <h1>Search db using a menu snapshot</h1>
+          <div className='results'>
+            {matches.map((item, index) => (
+              <li ><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
+                <div ><FoodItemView food_item={item}></FoodItemView> </div>
+              </Popup></li>
+            ))}
+          </div>
+          
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <label htmlFor="image">Image:  </label>
             <input type="file" id="image" name="file"
               accept="image/*" className="file-custom" />
             <br></br>
             <br></br>
-            <label htmlFor="lang_list" className="ml-sm-4 font-weight-bold mr-md-4">Enter list of languages :  </label>
+            <label htmlFor="lang_list">Enter list of languages:  </label>
+            <br></br>
             <input type="text" name="lang_list" />
-          </div>
+            <br></br>
+            <button type="submit" className="btn btn-md btn-primary">Upload</button>
+          </form>
+          <br></br>
+          <br></br>
+          <Link href="/">Home</Link>
         </div>
-
-        <div className="input-group justify-content-center mt-4">
-          <button type="submit" className="btn btn-md btn-primary">Upload,,,</button>
-        </div>
-      </form>
-      <br></br>
-      <br></br>
-      <Link href="/">Home</Link>
-    </div>
+      </div>
+    </Container>
   );
 }

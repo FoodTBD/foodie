@@ -5,11 +5,13 @@
 */
 
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import Container from 'react-bootstrap/Container';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from 'next/link';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import '../app/css/globals.css';
-import '../app/css/uploads.css';
+// import '../app/css/globals.css';
+// import '../app/css/uploads.css';
 import FoodItemView from '../app/components/food_item_view';
 
 
@@ -58,6 +60,8 @@ export default function UploadOcrText() {
   };
 
   return (
+    <Container className="p-3">
+    <div className="col-xs-12 col-sm-6 col-md-8">
     <div className="upload_ocr_text">
       <div className='error'>
         {displayError}
@@ -77,7 +81,7 @@ export default function UploadOcrText() {
           <label>
             Enter Query:<br></br>
           </label>
-          <textarea rows={30} cols={100} defaultValue={ocrDataArray} />
+          <textarea rows={20} cols={100} defaultValue={ocrDataArray} />
           <br></br>
           <button type="submit">Submit</button>
         </form>
@@ -85,5 +89,7 @@ export default function UploadOcrText() {
       <br></br>
       <Link href="/">Home</Link>
     </div>
+    </div>
+    </Container>
   );
 };
