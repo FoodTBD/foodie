@@ -1,11 +1,12 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import Link from 'next/link';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Link from 'next/link';
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 import FoodItemView from '../app/components/food_item_view';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'reactjs-popup/dist/index.css';
+
 
 
 export default function UploadMenuSnapshot() {
