@@ -40,6 +40,7 @@ export default function App() {
                     <li>Dish Name</li>
                     <li>Location/Region of the dish</li>
                     <li>A short description</li>
+                    <li><b>(Optional)</b> A picture of the dish</li>
                     <li><b>(Optional)</b> Any additional fun facts or information on how to properly eat the dish</li>
                 </ul>
             </div>
