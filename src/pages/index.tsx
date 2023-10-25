@@ -30,11 +30,17 @@ export default function App() {
                         Submit
                     </Button>
                 </Form>
-                <h2>Other Links:</h2>
+                <br></br>
+                <br></br>
+                <h3>Would you like to add a new dish to the database?</h3>
+                Email us at: <a href = "mailto: foodtbd@gmail.com">FoodTBD@gmail.com</a>
+                <br></br>
+                Please include the following information:
                 <ul>
-                    <li><Link href="/upload_ocr_text">Input the EasyOCR results array</Link></li>
-                    <li><Link href="/upload_menu_snapshot">Upload a menu snapshot to search</Link></li>
-                    <li><a href="https://docs.google.com/spreadsheets/d/18rHSAq_OmQDYqke-SvkN08AFkBvKTgJRKpnP7u09raE/edit#gid=1831747662" target="_blank">Go To Eats Google Sheet</a></li>
+                    <li>Dish Name</li>
+                    <li>Location/Region of the dish</li>
+                    <li>A short description</li>
+                    <li><b>(Optional)</b> Any additional fun facts or information on how to properly eat the dish</li>
                 </ul>
             </div>
         </Container>
