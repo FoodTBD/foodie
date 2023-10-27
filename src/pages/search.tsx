@@ -22,7 +22,7 @@ export default function DisplaySearchResults() {
         let promise = new Promise(function (resolve, reject) {
             let search_string = router.query.searchString
             setSearchString(search_string);
-            let url: string = "http://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/";
+            let url: string = "https://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/";
             // let url: string = 'http://127.0.0.1:5000/';
             fetch(url + 'search_db/' + search_string)
                 .then(response => response.json())
@@ -53,7 +53,7 @@ export default function DisplaySearchResults() {
         });
         promise.then((search_string) => {
             // let url: string = "http://ec2-107-20-28-252.compute-1.amazonaws.com:5000";
-            let url: string = 'http://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/';
+            let url: string = 'https://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/';
             fetch(url + 'search_db/' + search_string)
                 .then(response => response.json())
                 .then(data => setMatches(data['matches']))
