@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect, SetStateAction } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import Button from 'react-bootstrap/Button';
@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export default function DisplaySearchResults() {
-    const [searchString, setSearchString] = useState('');
+    const [searchString, setSearchString] = useState<string| string[]| undefined>('');
     const [matches, setMatches] = useState([]);
     const [displayError, setDisplayError] = useState('');
 
@@ -21,9 +21,9 @@ export default function DisplaySearchResults() {
     useEffect(() => {
         let promise = new Promise(function (resolve, reject) {
             let search_string = router.query.searchString
-            setSearchString(router.query.searchString);
-            // let url: string = "http://ec2-107-20-28-252.compute-1.amazonaws.com:5000";
-            let url: string = 'http://127.0.0.1:5000/';
+            setSearchString(search_string);
+            let url: string = "http://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/";
+            // let url: string = 'http://127.0.0.1:5000/';
             fetch(url + 'search_db/' + search_string)
                 .then(response => response.json())
                 .then(data => setMatches(data['matches']))
@@ -33,7 +33,7 @@ export default function DisplaySearchResults() {
                     console.error(errorStr);
                 });
 
-            console.log('Submitted text:', searchString);
+            console.log('Submitted text:', search_string);
         })
             .catch(error => {
                 let errorStr: string = 'ERROR: ' + error;
@@ -53,7 +53,7 @@ export default function DisplaySearchResults() {
         });
         promise.then((search_string) => {
             // let url: string = "http://ec2-107-20-28-252.compute-1.amazonaws.com:5000";
-            let url: string = 'http://127.0.0.1:5000/';
+            let url: string = 'http://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/';
             fetch(url + 'search_db/' + search_string)
                 .then(response => response.json())
                 .then(data => setMatches(data['matches']))
@@ -83,8 +83,8 @@ export default function DisplaySearchResults() {
                         <h1>Search results for: {searchString}</h1>
                         <ul>
                             {matches.map((item, index) => (
-                                <li><Popup trigger={<button>{item.name_native} [{item.name_en}]</button>} modal nested>
-                                    <div ><FoodItemView food_item={item}></FoodItemView> </div>
+                                <li key={item}><Popup trigger={<button>{item['name_native']} [{item['name_en']}]</button>} modal nested>
+                                    <div ><FoodItemView key={item} food_item={item}></FoodItemView> </div>
                                 </Popup></li>
                             ))}
                         </ul>

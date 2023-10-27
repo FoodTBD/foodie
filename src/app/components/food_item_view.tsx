@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import '../../app/css/globals.css';
 
 
-export default function FoodItemView(props) {
+export default function FoodItemView(props: { food_item: any; }) {
     const foodItem = props.food_item;
     return(
         <div className='foodItemView'>
