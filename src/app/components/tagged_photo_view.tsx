@@ -14,8 +14,9 @@ export default function TaggedPhotoView(props: { food_item: any; }) {
         <Container>
             <div className='taggedPhotoView'>
                 <h1>Mole Poblano</h1>
-                FoodieUser1 <br></br>
-                100 Likes
+                SFFoodiePerson <br></br>
+                101 Likes<br></br>
+                <Link href="/">Save To List</Link>
                 <br></br><br></br>
                 <div className="row">
                     <div className="col col-md-4">

@@ -22,7 +22,9 @@ export default function App() {
             <div className="col-xs-12 col-sm-6 col-md-8">
                 <h1> Welcome to FoodTBD</h1>
                 <Link href="/create_user">Join</Link><br></br>
-                <Link href="/">Login</Link>
+                <Link href="/">Login</Link><br></br>
+                <Link href="/user_profile_page">User Profile Page</Link>
+                <br></br>
                 <br></br>
                 <Form onSubmit={handleSearchSubmit}>
                     <Form.Group className="mb-3" controlId="formSearch">
@@ -34,11 +36,6 @@ export default function App() {
                     </Button>
                 </Form>
                 <br></br>
-                <br></br>
-                <Link href="/user_profile_page">User Profile Page</Link>
-                <br></br>
-                
-                <Link href="/create_new_list">Create New List</Link>
                 <h3>Would you like to add a new dish to the database?</h3>
                 Email us at: <a href = "mailto: foodtbd@gmail.com">FoodTBD@gmail.com</a>
                 <br></br>
