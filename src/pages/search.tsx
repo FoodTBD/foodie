@@ -2,17 +2,19 @@ import React, { useState, ChangeEvent, FormEvent, useEffect, SetStateAction } fr
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Popup from 'reactjs-popup';
-import FoodItemView from '../app/components/food_item_view';
+import FoodItemView from '@/app/components/food_item_view';
 import 'reactjs-popup/dist/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './/css/pagestyle.css'
 
 
 
 export default function DisplaySearchResults() {
-    const [searchString, setSearchString] = useState<string| string[]| undefined>('');
+    const [searchString, setSearchString] = useState<string | string[] | undefined>('');
     const [matches, setMatches] = useState([]);
     const [displayError, setDisplayError] = useState('');
 
@@ -22,8 +24,8 @@ export default function DisplaySearchResults() {
         let promise = new Promise(function (resolve, reject) {
             let search_string = router.query.searchString
             setSearchString(search_string);
-            let url: string = "https://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/";
-            // let url: string = 'http://127.0.0.1:5000/';
+            // let url: string = "https://food-tbd-waiter.eba-5ynepjcj.us-east-1.elasticbeanstalk.com/";
+            let url: string = 'http://127.0.0.1:5000/';
             fetch(url + 'search_db/' + search_string)
                 .then(response => response.json())
                 .then(data => setMatches(data['matches']))
@@ -81,13 +83,28 @@ export default function DisplaySearchResults() {
                     </div>
                     <div className='results'>
                         <h1>Search results for: {searchString}</h1>
-                        <ul>
+                        {/* <ul>
                             {matches.map((item, index) => (
                                 <li key={item}><Popup trigger={<button>{item['name_native']} [{item['name_en']}]</button>} modal nested>
                                     <div ><FoodItemView key={item} food_item={item}></FoodItemView> </div>
                                 </Popup></li>
                             ))}
-                        </ul>
+                        </ul> */}
+                        {matches.map((item, index) => (
+                            <div className='dishCard'>
+                                <Card style={{ width: '18rem' }}>
+                                    <Card.Img variant="top" src={item.image_url} style={{ width: 180, height: 100 }} />
+                                    <Card.Body>
+                                        <Card.Title>{item['name_native']}</Card.Title>
+                                        {/* <Card.Text>
+                                        {item.summary_en}
+                                        </Card.Text> */}
+                                        {/* <Button variant="primary">Learn More</Button> */}
+                                        <a href={`/dish/${encodeURIComponent(item["name_native"])}`} className="btn btn-info" role="button">Show More</a>
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                        ))}
                     </div>
                     <div>
                         <Form onSubmit={handleSubmit}>
