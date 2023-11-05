@@ -25,6 +25,7 @@ export default function App() {
                 <Link href="/">Login</Link><br></br>
                 <Link href="/user_profile_page">User Profile Page</Link>
                 <br></br>
+                <Link href="/upload_new_photo">Add Photo</Link>
                 <br></br>
                 <Form onSubmit={handleSearchSubmit}>
                     <Form.Group className="mb-3" controlId="formSearch">

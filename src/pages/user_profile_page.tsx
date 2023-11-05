@@ -118,7 +118,7 @@ export default function UserProfilePage() {
           </div>
           <h3>My Lists</h3>
           <ul>
-            <li><Link href="/">Chinese Dumplings</Link></li>
+            <li><Link href={`/lists/${encodeURIComponent("chinese dumplings")}`}>Chinese Dumplings</Link></li>
             <li><Link href="/">Ethiopian</Link></li>
             <li><Link href="/">To Try</Link></li>
           </ul>
@@ -129,3 +129,4 @@ export default function UserProfilePage() {
     </Container>
   );
 }
+
